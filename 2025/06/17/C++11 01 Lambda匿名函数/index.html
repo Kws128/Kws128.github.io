@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="一、 核心语法1234[capture-list](parameters)mutable -&amp;gt; return-type&amp;#123;    // func body&amp;#125;
+
+1 capture-list：外部变量捕获列表
+
+
+例子
+说明
+
+
+
+[]
+不捕获任何变量
+
+
+[&amp;#x3D;]
+值"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Kws128"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="C++11 Lambda匿名函数"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="一、 核心语法1234[capture-list](parameters)mutable -&amp;gt; return-type&amp;#123;    // func body&amp;#125;
+
+1 capture-list：外部变量捕获列表
+
+
+例子
+说明
+
+
+
+[]
+不捕获任何变量
+
+
+[&amp;#x3D;]
+值"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Kws128&#39;s Blogs"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://kws128.github.ioimg/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://kws128.github.ioimg/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>C++11 Lambda匿名函数 - Kws128&#39;s Blogs</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Configurable Title</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/tags">
+                            
+                                Tags
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/categories">
+                            
+                                Categories
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/klugjo/hexo-theme-clean-blog">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>C++11 Lambda匿名函数</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2025-06-17
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+<a href="/categories/编程语言与框架/">编程语言与框架</a>/ <a href="/categories/编程语言与框架/C/">C++</a>/ <a href="/categories/编程语言与框架/C/C-11/">C++11</a>
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2 id="一、-核心语法"><a href="#一、-核心语法" class="headerlink" title="一、 核心语法"></a>一、 核心语法</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[capture-list](parameters)<span class="keyword">mutable</span> -&gt; <span class="keyword">return</span>-type</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// func body</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-capture-list：外部变量捕获列表"><a href="#1-capture-list：外部变量捕获列表" class="headerlink" title="1 capture-list：外部变量捕获列表"></a>1 capture-list：外部变量捕获列表</h3><table>
+<thead>
+<tr>
+<th>例子</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>[]</td>
+<td>不捕获任何变量</td>
+</tr>
+<tr>
+<td>[&#x3D;]</td>
+<td>值捕获所有变量</td>
+</tr>
+<tr>
+<td>[&amp;]</td>
+<td>引用捕获所有变量</td>
+</tr>
+<tr>
+<td>[x]</td>
+<td>值捕获<code>x</code>变量</td>
+</tr>
+<tr>
+<td>[&amp;x]</td>
+<td>引用捕获<code>x</code>变量（在lambda匿名函数内修改<code>x</code>影响外部<code>x</code></td>
+</tr>
+<tr>
+<td>[x,&amp;y]</td>
+<td>值捕获<code>x</code>变量，引用捕获y&#96;变量（混合捕获）</td>
+</tr>
+<tr>
+<td>[&#x3D;,&amp;x]</td>
+<td>除了<code>x</code>变量按值捕获，其他所有变量按引用捕获（混合捕获）</td>
+</tr>
+<tr>
+<td>[&amp;, x]</td>
+<td>除了<code>x</code>变量按引用捕获，其他所有变量按值捕获（混合捕获）</td>
+</tr>
+<tr>
+<td>[this]</td>
+<td>值捕获<code>this</code>指针,<code>this</code>虽然是值捕获，但是和lambda内的副本<code>this</code>指向同一内存，所有还是会影响外部<code>this</code>（对其他指针同理）</td>
+</tr>
+</tbody></table>
+<h3 id="2-parameters：参数列表-可选"><a href="#2-parameters：参数列表-可选" class="headerlink" title="2 parameters：参数列表  [可选]"></a>2 parameters：参数列表  [可选]</h3><p>参数和普通函数一样，从<code>C++14</code>开始支持默认参数。</p>
+<h3 id="3-mutable：可变规范-可选"><a href="#3-mutable：可变规范-可选" class="headerlink" title="3 mutable：可变规范  [可选]"></a>3 mutable：可变规范  [可选]</h3><p>值捕获外部变量默认是<code>const</code>成员变量(lambda底层是函数对象)，如何要修改副本的值，需要添加<code>mutable</code>来消除<code>const</code>属性。</p>
+<h3 id="4-return-type：返回值类型-可选"><a href="#4-return-type：返回值类型-可选" class="headerlink" title="4 return-type：返回值类型  [可选]"></a>4 return-type：返回值类型  [可选]</h3><p>使用<code>-&gt;类型</code>的方式指出返回值类型，如：<code>-&gt;int</code>；当编译器自己能推导出返回值类型时（如：单条<code>return</code>或者<code>void</code>函数）可省略。</p>
+<h3 id="5-…-：函数体"><a href="#5-…-：函数体" class="headerlink" title="5 {…}：函数体"></a>5 {…}：函数体</h3><p>实现函数功能逻辑。</p>
+<h2 id="二、注意事项"><a href="#二、注意事项" class="headerlink" title="二、注意事项"></a>二、注意事项</h2><ul>
+<li><p><strong>引用捕获外部变量或者值捕获外部指针时，注意避免使用<code>悬空指针</code></strong></p>
+</li>
+<li><p><strong>大型对象尽量避免使用值捕获，拷贝开销大</strong></p>
+</li>
+<li><p><strong>不能直接递归，需使用<code>std::function</code>进行封装</strong></p>
+</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::function&lt;<span class="type">int</span>(<span class="type">int</span>)&gt; factorial = [&amp;](<span class="type">int</span> n) &#123;</span><br><span class="line">    <span class="built_in">return</span> (n &lt;= <span class="number">1</span>) ? <span class="number">1</span> : n * <span class="built_in">factorial</span>(n - <span class="number">1</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>C++14</code>以上参数支持<code>auto</code>声明</li>
+</ul>
+<h2 id="三、经典使用场景"><a href="#三、经典使用场景" class="headerlink" title="三、经典使用场景"></a>三、经典使用场景</h2><ul>
+<li><code>STL</code>算法中的自定义操作</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;<span class="type">int</span>&gt; v = &#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>&#125;;</span><br><span class="line">std::<span class="built_in">sort</span>(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>(), [](<span class="type">int</span> a, <span class="type">int</span> b)&#123;<span class="keyword">return</span> a &gt; b;&#125;) <span class="comment">// 降序</span></span><br><span class="line">v.<span class="built_in">erase</span>(std::<span class="built_in">remove_if</span>(v.<span class="built_in">begin</span>(), v.<span class="built_in">end</span>(), [](<span class="type">int</span> x) &#123; <span class="keyword">return</span> x%<span class="number">2</span> == <span class="number">0</span>; &#125;),v.<span class="built_in">end</span>());<span class="comment">// 过滤偶数</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>异步任务</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">std::thread <span class="title">t</span><span class="params">([&amp;]() &#123;std::cout &lt;&lt; <span class="string">&quot;Thread with captured vars\n&quot;</span>;&#125;)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>QT</code>中的槽函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">connect</span>(ui.btnClose, &amp;QPushButton::clicked, [&amp;]() &#123;<span class="built_in">close</span>(); &#125;);</span><br></pre></td></tr></table></figure>
+
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/klugjo/hexo-theme-clean-blog" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2025 Kws128<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>

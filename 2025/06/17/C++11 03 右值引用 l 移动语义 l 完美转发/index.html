@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+    <!--Description-->
+
+    
+
+    
+        <meta name="description" content="一、右值引用1 什么是右值？
+左值（Lvalue）：具有持久状态的对象，可以取地址，通常有名称。
+右值（Rvalue）：临时对象或字面量，无法取地址，生命周期短暂。
+纯右值（prvalue）：字面量、算术表达式结果、返回非引用的函数调用。
+将亡值（xvalue）：通过右值引用标记的对象（如 std:"/>
+    
+
+    <!--Author-->
+    
+        <meta name="author" content="Kws128"/>
+    
+
+    <!--Open Graph Title-->
+    
+        <meta property="og:title" content="C++11 右值引用/移动语义/完美转发"/>
+    
+
+    <!--Open Graph Description-->
+    
+        <meta property="og:description" content="一、右值引用1 什么是右值？
+左值（Lvalue）：具有持久状态的对象，可以取地址，通常有名称。
+右值（Rvalue）：临时对象或字面量，无法取地址，生命周期短暂。
+纯右值（prvalue）：字面量、算术表达式结果、返回非引用的函数调用。
+将亡值（xvalue）：通过右值引用标记的对象（如 std:"/>
+    
+
+    <!--Open Graph Site Name-->
+        <meta property="og:site_name" content="Kws128&#39;s Blogs"/>
+
+    <!--Type page-->
+    
+        <meta property="og:type" content="article"/>
+    
+
+    <!--Page Cover-->
+    
+    
+        <meta property="og:image" content="https://kws128.github.ioimg/home-bg.jpg"/>
+    
+
+        <meta name="twitter:card" content="summary_large_image"/>
+
+    
+
+    
+        <meta name="twitter:image" content="https://kws128.github.ioimg/home-bg.jpg"/>
+    
+
+    <!-- Title -->
+    
+    <title>C++11 右值引用/移动语义/完美转发 - Kws128&#39;s Blogs</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+
+    <!-- Custom Fonts -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css"/>
+    <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css"/>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="//oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Gallery -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.css" type="text/css" rel="stylesheet"/>
+
+    <!-- Google Analytics -->
+    
+
+
+    <!-- favicon -->
+    
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+
+    <!-- Menu -->
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Configurable Title</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav navbar-right">
+                
+                    <li>
+                        <a href="/">
+                            
+                                Home
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/archives">
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/tags">
+                            
+                                Tags
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a href="/categories">
+                            
+                                Categories
+                            
+                        </a>
+                    </li>
+                
+                    <li>
+                        <a target="_blank" rel="noopener" href="https://github.com/klugjo/hexo-theme-clean-blog">
+                            
+                                <i class="fa fa-github fa-stack-2x"></i>
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+    <!-- Main Content -->
+    <!-- Page Header -->
+<!-- Set your background image for this header in your post front-matter: cover -->
+
+<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <h1>C++11 右值引用/移动语义/完美转发</h1>
+                    
+                    <span class="meta">
+                        <!-- Date and Author -->
+                        
+                        
+                            2025-06-17
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Tags and categories -->
+           
+                <div class="col-lg-4 col-lg-offset-2 col-md-5 col-md-offset-1 post-tags">
+                    
+                        
+
+<a href="/categories/编程语言与框架/">编程语言与框架</a>/ <a href="/categories/编程语言与框架/C/">C++</a>/ <a href="/categories/编程语言与框架/C/C-11/">C++11</a>
+
+                    
+                </div>
+                <div class="col-lg-4 col-md-5 post-categories">
+                    
+                </div>
+            
+
+            <!-- Gallery -->
+            
+
+            <!-- Post Main Content -->
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <h2 id="一、右值引用"><a href="#一、右值引用" class="headerlink" title="一、右值引用"></a>一、右值引用</h2><h3 id="1-什么是右值？"><a href="#1-什么是右值？" class="headerlink" title="1 什么是右值？"></a>1 什么是右值？</h3><ul>
+<li><strong>左值（Lvalue）</strong>：具有持久状态的对象，可以取地址，通常有名称。</li>
+<li><strong>右值（Rvalue）</strong>：临时对象或字面量，无法取地址，生命周期短暂。<ul>
+<li><strong>纯右值（prvalue）</strong>：字面量、算术表达式结果、返回非引用的函数调用。</li>
+<li><strong>将亡值（xvalue）</strong>：通过右值引用标记的对象（如 <code>std::move</code> 的结果）</li>
+</ul>
+</li>
+</ul>
+<p>&#x3D;&#x3D;注意：左右值引用声明时一定要初始化&#x3D;&#x3D;</p>
+<h3 id="2-如何判断一个表达式是左值还是右值-？"><a href="#2-如何判断一个表达式是左值还是右值-？" class="headerlink" title="2 如何判断一个表达式是左值还是右值 ？"></a>2 如何判断一个表达式是左值还是右值 ？</h3><ul>
+<li>可位于赋值号（&#x3D;）左边就是左值（左值也可以位于赋值号右边），<code>只能</code>位于赋值号右边的一定是右值</li>
+<li>有名称、可寻址的即为左值，反之为右值</li>
+</ul>
+<p>&#x3D;&#x3D;注意：以上两个方法只使用于大部分情况&#x3D;&#x3D;</p>
+<h3 id="3-右值引用在编程中，一般在什么地方使用？"><a href="#3-右值引用在编程中，一般在什么地方使用？" class="headerlink" title="3 右值引用在编程中，一般在什么地方使用？"></a>3 右值引用在编程中，一般在什么地方使用？</h3><ul>
+<li>函数参数：最常见，一般用于实现移动语义和完美转发；</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1.</span> <span class="built_in">MyClass</span>(MyClass&amp;&amp; other);				\\ 移动构造函数</span><br><span class="line"><span class="number">2.</span> MyClass&amp; <span class="keyword">operator</span>=(MyClass&amp;&amp; other);		\\ 移动赋值运算符</span><br><span class="line"><span class="number">3.</span> <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;                     \\ 泛型编程中的通用引用，比如实现完美转发时</span><br><span class="line">   <span class="function"><span class="type">void</span> <span class="title">func</span><span class="params">(T&amp;&amp; param)</span></span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>函数返回值：少见，可能会造成悬空引用问题，以前我一直认为右值引用是用来转移资源的，其实不是，它和左值引用一样都是需要引用具体的数据，它只是一个标记，告诉编译器它是右值，让编译器尝试调用移动构造函数或者移动赋值运算符（如何存在的话，这才是资源得以转移的原因），因此，函数返回值没必要设计为右值引用，设计为正常类型就行，如果符合移动语义，编译器自然会自动调用移动构造函数或者移动赋值函数（编译器的RVO或NRVO行为），将资源转移到函数返回时创建的临时变量中，从这里也不能看出，函数返回值默认就是右值，但它的类型不是T&amp;&amp;，而是T。</li>
+</ul>
+<h3 id="4-引用限定符"><a href="#4-引用限定符" class="headerlink" title="4 引用限定符"></a>4 引用限定符</h3><ul>
+<li>无<code>const</code>修饰的成员函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">MyClass</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">display</span><span class="params">()</span> &amp; </span>&#123;&#125;    <span class="comment">// 限定只能左值对象可以调用该函数</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">display1</span><span class="params">()</span> &amp;&amp; </span>&#123;&#125;  <span class="comment">// 限定只能右值对象可以调用该函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>有<code>const</code>修饰的成员函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">MyClass</span><br><span class="line">&#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">display</span><span class="params">()</span> <span class="type">const</span> &amp; </span>&#123;&#125;    <span class="comment">// 左右值对象都可以调用该函数</span></span><br><span class="line">    <span class="function"><span class="type">void</span> <span class="title">display1</span><span class="params">()</span> <span class="type">const</span> &amp;&amp; </span>&#123;&#125;  <span class="comment">// 限定只能右值对象可以调用该函数</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="5-右值引用最大的用武之地"><a href="#5-右值引用最大的用武之地" class="headerlink" title="5 右值引用最大的用武之地"></a>5 右值引用最大的用武之地</h3><ul>
+<li>移动语义</li>
+<li>完美转发</li>
+</ul>
+<h2 id="二、移动语义"><a href="#二、移动语义" class="headerlink" title="二、移动语义"></a>二、移动语义</h2><h3 id="1-什么是移动语义？"><a href="#1-什么是移动语义？" class="headerlink" title="1 什么是移动语义？"></a>1 什么是移动语义？</h3><p>​	移动语义指的就是以<code>移动而非深拷贝</code>的方式初始化含有指针、文件句柄等资源的类对象，通常是将临时对象（右值）资源移动为己用，减少拷贝开销，提升性能。</p>
+<h3 id="2-移动语义的实现"><a href="#2-移动语义的实现" class="headerlink" title="2 移动语义的实现"></a>2 移动语义的实现</h3><p><code>移动构造函数</code>和<code>移动赋值运算符</code></p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">MyClass</span>(MyClass&amp;&amp; other)&#123; &#125;；</span><br><span class="line">MyClass&amp; <span class="keyword">operator</span>=(MyClass&amp;&amp; other) &#123;</span><br><span class="line">    <span class="keyword">if</span> (&amp;other != <span class="keyword">this</span>)&#123; &#125;</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-std-move"><a href="#3-std-move" class="headerlink" title="3 std::move"></a>3 std::move</h3><p>​	<code>std::move</code>不是移动资源的作用，它的功能是将一个左值转为右值，<code>触发移动语义</code>。</p>
+<h3 id="4-移动语义使用场景"><a href="#4-移动语义使用场景" class="headerlink" title="4 移动语义使用场景"></a>4 移动语义使用场景</h3><ul>
+<li>资源管理类</li>
+<li>大型对象和不可拷贝对象（<code>std::unique_str</code>、<code>std::mutex</code>）</li>
+</ul>
+<h2 id="三、完美转发"><a href="#三、完美转发" class="headerlink" title="三、完美转发"></a>三、完美转发</h2><h3 id="1-什么是完美转发？"><a href="#1-什么是完美转发？" class="headerlink" title="1 什么是完美转发？"></a>1 什么是完美转发？</h3><p>​	在泛型编程中，将函数的参数以<strong>原始的值类别</strong>（左值或右值）转发给其他函数，确保目标函数能正确选择重载版本（如拷贝或移动语义）。</p>
+<h3 id="2-完美转发实现关键点"><a href="#2-完美转发实现关键点" class="headerlink" title="2 完美转发实现关键点"></a>2 完美转发实现关键点</h3><ul>
+<li>将通用引用（右值）作为模板函数的参数类型</li>
+<li>使用<code>std::forward</code>传递参数，保持参数的左右值属性</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="title">CallFunc</span><span class="params">(T&amp;&amp; v)</span></span>&#123; <span class="keyword">return</span> <span class="built_in">targetFunc</span>(std::forward&lt;T&gt;(v)); &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-移动语义使用场景"><a href="#3-移动语义使用场景" class="headerlink" title="3 移动语义使用场景"></a>3 移动语义使用场景</h3><ul>
+<li>包装器函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span>... Args&gt;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">CallFunc</span><span class="params">(Args&amp;&amp;... args)</span></span>&#123;<span class="built_in">targetFunc</span>(std::forward&lt;Args&gt;(args)...);&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>工厂函数和对象创建</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span>...Args&gt;</span><br><span class="line"><span class="function"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="title">createObject</span><span class="params">(Args&amp;&amp;... args)</span></span>&#123;<span class="keyword">return</span> <span class="built_in">T</span>(std::forward&lt;Arsg&gt;(args)...);&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>中间层函数</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Func, <span class="keyword">typename</span>...Args&gt;</span><br><span class="line"><span class="function"><span class="keyword">decltype</span>(<span class="keyword">auto</span>) <span class="title">logAndCall</span><span class="params">(Func&amp;&amp; func, Args&amp;&amp;...)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> std::forward&lt;Func&gt;(func)(std::forward&lt;Args&gt;(args)...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+                
+            </div>
+
+            <!-- Comments -->
+            
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+
+
+                </div>
+            
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <hr />
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                    
+
+                    
+
+                    
+                        <li>
+                            <a href="https://github.com/klugjo/hexo-theme-clean-blog" target="_blank">
+                                <span class="fa-stack fa-lg">
+                                    <i class="fa fa-circle fa-stack-2x"></i>
+                                    <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                                </span>
+                            </a>
+                        </li>
+                    
+
+                    
+
+                    
+
+                    
+                </ul>
+                <p class="copyright text-muted">&copy; 2025 Kws128<br></p>
+                <p class="copyright text-muted">Original Theme <a target="_blank" href="http://startbootstrap.com/template-overviews/clean-blog/">Clean Blog</a> from <a href="http://startbootstrap.com/" target="_blank">Start Bootstrap</a></p>
+                <p class="copyright text-muted">Adapted for <a target="_blank" href="https://hexo.io/">Hexo</a> by <a href="http://www.codeblocq.com/" target="_blank">Jonathan Klughertz</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+    <!-- After footer scripts -->
+    
+<!-- jQuery -->
+<script src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+
+<!-- Bootstrap -->
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+<!-- Gallery -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/featherlight/1.3.5/featherlight.min.js" type="text/javascript" charset="utf-8"></script>
+
+<!-- Disqus Comments -->
+
+
+
+</body>
+
+</html>
