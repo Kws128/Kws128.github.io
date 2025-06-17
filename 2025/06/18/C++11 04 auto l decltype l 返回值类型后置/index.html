@@ -19,21 +19,21 @@
   <meta name="author" content="Kws128">
   <meta name="keywords" content="">
   
-    <meta name="description" content="一、右值引用1 什么是右值？ 左值（Lvalue）：具有持久状态的对象，可以取地址，通常有名称。 右值（Rvalue）：临时对象或字面量，无法取地址，生命周期短暂。 纯右值（prvalue）：字面量、算术表达式结果、返回非引用的函数调用。 将亡值（xvalue）：通过右值引用标记的对象（如 std::move 的结果）    &#x3D;&#x3D;注意：左右值引用声明时一定要初始化&#x3D;&amp;">
+    <meta name="description" content="一、auto1auto name &#x3D; value;  1 推导规则 auto根据赋值号（&#x3D;）右边值的类型推导类型，因此声明时必须初始化； auto会退化表达式的引用性（100%）和顶层CV限定符。  123int   k &#x3D; 100;const i &#x3D; 10;  auto j &#x3D; i;		&#x2F;&#x2F; j推导为int,忽略顶层constint&amp;  n &#x3D; k;   auto m &#x3D; k;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="C++11 右值引用&#x2F;移动语义&#x2F;完美转发">
-<meta property="og:url" content="https://kws128.github.io/2025/06/17/C++11%2003%20%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%20l%20%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89%20l%20%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91/index.html">
+<meta property="og:title" content="C++11 auto&#x2F;decltype&#x2F;返回值类型后置">
+<meta property="og:url" content="https://kws128.github.io/2025/06/18/C++11%2004%20auto%20l%20decltype%20l%20%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B%E5%90%8E%E7%BD%AE/index.html">
 <meta property="og:site_name" content="Kws128&#39;s blog">
-<meta property="og:description" content="一、右值引用1 什么是右值？ 左值（Lvalue）：具有持久状态的对象，可以取地址，通常有名称。 右值（Rvalue）：临时对象或字面量，无法取地址，生命周期短暂。 纯右值（prvalue）：字面量、算术表达式结果、返回非引用的函数调用。 将亡值（xvalue）：通过右值引用标记的对象（如 std::move 的结果）    &#x3D;&#x3D;注意：左右值引用声明时一定要初始化&#x3D;&amp;">
+<meta property="og:description" content="一、auto1auto name &#x3D; value;  1 推导规则 auto根据赋值号（&#x3D;）右边值的类型推导类型，因此声明时必须初始化； auto会退化表达式的引用性（100%）和顶层CV限定符。  123int   k &#x3D; 100;const i &#x3D; 10;  auto j &#x3D; i;		&#x2F;&#x2F; j推导为int,忽略顶层constint&amp;  n &#x3D; k;   auto m &#x3D; k;">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-06-16T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-06-16T20:26:44.104Z">
+<meta property="article:published_time" content="2025-06-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-17T18:47:49.767Z">
 <meta property="article:author" content="Kws128">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>C++11 右值引用/移动语义/完美转发 - Kws128&#39;s blog</title>
+  <title>C++11 auto/decltype/返回值类型后置 - Kws128&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -199,7 +199,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="C++11 右值引用/移动语义/完美转发"></span>
+            <span id="subtitle" data-typed-text="C++11 auto/decltype/返回值类型后置"></span>
           
         </div>
 
@@ -210,8 +210,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-06-17 00:00" pubdate>
-          2025年6月17日 凌晨
+        <time datetime="2025-06-18 00:00" pubdate>
+          2025年6月18日 凌晨
         </time>
       </span>
     
@@ -222,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          1.1k 字
+          862 字
         
       </span>
     
@@ -233,7 +233,7 @@
         
         
         
-          10 分钟
+          8 分钟
         
       </span>
     
@@ -270,84 +270,89 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header">C++11 右值引用/移动语义/完美转发</h1>
+            <h1 id="seo-header">C++11 auto/decltype/返回值类型后置</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="一、右值引用"><a href="#一、右值引用" class="headerlink" title="一、右值引用"></a>一、右值引用</h2><h3 id="1-什么是右值？"><a href="#1-什么是右值？" class="headerlink" title="1 什么是右值？"></a>1 什么是右值？</h3><ul>
-<li><strong>左值（Lvalue）</strong>：具有持久状态的对象，可以取地址，通常有名称。</li>
-<li><strong>右值（Rvalue）</strong>：临时对象或字面量，无法取地址，生命周期短暂。<ul>
-<li><strong>纯右值（prvalue）</strong>：字面量、算术表达式结果、返回非引用的函数调用。</li>
-<li><strong>将亡值（xvalue）</strong>：通过右值引用标记的对象（如 <code>std::move</code> 的结果）</li>
+                <h2 id="一、auto"><a href="#一、auto" class="headerlink" title="一、auto"></a>一、auto</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">auto</span> name = value;<br></code></pre></td></tr></table></figure>
+
+<h3 id="1-推导规则"><a href="#1-推导规则" class="headerlink" title="1 推导规则"></a>1 推导规则</h3><ul>
+<li>auto根据赋值号（&#x3D;）右边值的类型推导类型，<code>因此声明时必须初始化</code>；</li>
+<li>auto会退化表达式的引用性（<code>100%</code>）和顶层<code>CV</code>限定符。</li>
 </ul>
-</li>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-type">int</span>   k = <span class="hljs-number">100</span>;<br><span class="hljs-type">const</span> i = <span class="hljs-number">10</span>;  <span class="hljs-keyword">auto</span> j = i;		<span class="hljs-comment">// j推导为int,忽略顶层const</span><br><span class="hljs-type">int</span>&amp;  n = k;   <span class="hljs-keyword">auto</span> m = k;		<span class="hljs-comment">// m推导为int,忽略引用属性</span><br></code></pre></td></tr></table></figure>
+
+<p>&#x3D;&#x3D;注意&#x3D;&#x3D;：<code>auto只是一个占位符，编译期间就会被替换为正真的类型</code></p>
+<h3 id="2-单独使用以及结合使用"><a href="#2-单独使用以及结合使用" class="headerlink" title="2 单独使用以及结合使用"></a>2 单独使用以及结合使用</h3><ul>
+<li>单独使用</li>
 </ul>
-<p>&#x3D;&#x3D;注意：左右值引用声明时一定要初始化&#x3D;&#x3D;</p>
-<h3 id="2-如何判断一个表达式是左值还是右值-？"><a href="#2-如何判断一个表达式是左值还是右值-？" class="headerlink" title="2 如何判断一个表达式是左值还是右值 ？"></a>2 如何判断一个表达式是左值还是右值 ？</h3><ul>
-<li>可位于赋值号（&#x3D;）左边就是左值（左值也可以位于赋值号右边），<code>只能</code>位于赋值号右边的一定是右值</li>
-<li>有名称、可寻址的即为左值，反之为右值</li>
-</ul>
-<p>&#x3D;&#x3D;注意：以上两个方法只使用于大部分情况&#x3D;&#x3D;</p>
-<h3 id="3-右值引用在编程中，一般在什么地方使用？"><a href="#3-右值引用在编程中，一般在什么地方使用？" class="headerlink" title="3 右值引用在编程中，一般在什么地方使用？"></a>3 右值引用在编程中，一般在什么地方使用？</h3><ul>
-<li>函数参数：最常见，一般用于实现移动语义和完美转发；</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-number">1.</span> <span class="hljs-built_in">MyClass</span>(MyClass&amp;&amp; other);				\\ 移动构造函数<br><span class="hljs-number">2.</span> MyClass&amp; <span class="hljs-keyword">operator</span>=(MyClass&amp;&amp; other);		\\ 移动赋值运算符<br><span class="hljs-number">3.</span> <span class="hljs-keyword">template</span>&lt;<span class="hljs-keyword">typename</span> T&gt;                     \\ 泛型编程中的通用引用，比如实现完美转发时<br>   <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func</span><span class="hljs-params">(T&amp;&amp; param)</span></span><br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">auto</span> i = <span class="hljs-number">10</span>;<br><span class="hljs-keyword">auto</span> j = i;<br></code></pre></td></tr></table></figure>
 
 <ul>
-<li>函数返回值：少见，可能会造成悬空引用问题，以前我一直认为右值引用是用来转移资源的，其实不是，它和左值引用一样都是需要引用具体的数据，它只是一个标记，告诉编译器它是右值，让编译器尝试调用移动构造函数或者移动赋值运算符（如何存在的话，这才是资源得以转移的原因），因此，函数返回值没必要设计为右值引用，设计为正常类型就行，如果符合移动语义，编译器自然会自动调用移动构造函数或者移动赋值函数（编译器的RVO或NRVO行为），将资源转移到函数返回时创建的临时变量中，从这里也不能看出，函数返回值默认就是右值，但它的类型不是T&amp;&amp;，而是T。</li>
+<li>结合使用</li>
 </ul>
-<h3 id="4-引用限定符"><a href="#4-引用限定符" class="headerlink" title="4 引用限定符"></a>4 引用限定符</h3><ul>
-<li>无<code>const</code>修饰的成员函数</li>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;<br><span class="hljs-keyword">auto</span>* p = &amp;i;		<span class="hljs-comment">// p类型为int*, 因此auto为int</span><br><span class="hljs-keyword">auto</span>&amp; r = i;		<span class="hljs-comment">// r类型为int&amp;, 因此auto为int</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="3-经典使用场景"><a href="#3-经典使用场景" class="headerlink" title="3 经典使用场景"></a>3 经典使用场景</h3><ul>
+<li>简化复杂书写类型的声明（如：STL容器迭代器）</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C++">MyClass<br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">display</span><span class="hljs-params">()</span> &amp; </span>&#123;&#125;    <span class="hljs-comment">// 限定只能左值对象可以调用该函数</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">display1</span><span class="hljs-params">()</span> &amp;&amp; </span>&#123;&#125;  <span class="hljs-comment">// 限定只能右值对象可以调用该函数</span><br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs C++">vector&lt;<span class="hljs-type">int</span>&gt; ids; <br><span class="hljs-keyword">auto</span> iter = ids.<span class="hljs-built_in">begin</span>();<br><span class="hljs-keyword">auto</span> sp   = std::<span class="hljs-built_in">make_shared</span>&lt;<span class="hljs-type">int</span>&gt;(<span class="hljs-number">10</span>);<br></code></pre></td></tr></table></figure>
 
 <ul>
-<li>有<code>const</code>修饰的成员函数</li>
+<li>lamdab表达式</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C++">MyClass<br>&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">display</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> &amp; </span>&#123;&#125;    <span class="hljs-comment">// 左右值对象都可以调用该函数</span><br>    <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">display1</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> &amp;&amp; </span>&#123;&#125;  <span class="hljs-comment">// 限定只能右值对象可以调用该函数</span><br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="5-右值引用最大的用武之地"><a href="#5-右值引用最大的用武之地" class="headerlink" title="5 右值引用最大的用武之地"></a>5 右值引用最大的用武之地</h3><ul>
-<li>移动语义</li>
-<li>完美转发</li>
-</ul>
-<h2 id="二、移动语义"><a href="#二、移动语义" class="headerlink" title="二、移动语义"></a>二、移动语义</h2><h3 id="1-什么是移动语义？"><a href="#1-什么是移动语义？" class="headerlink" title="1 什么是移动语义？"></a>1 什么是移动语义？</h3><p>​	移动语义指的就是以<code>移动而非深拷贝</code>的方式初始化含有指针、文件句柄等资源的类对象，通常是将临时对象（右值）资源移动为己用，减少拷贝开销，提升性能。</p>
-<h3 id="2-移动语义的实现"><a href="#2-移动语义的实现" class="headerlink" title="2 移动语义的实现"></a>2 移动语义的实现</h3><p><code>移动构造函数</code>和<code>移动赋值运算符</code></p>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-built_in">MyClass</span>(MyClass&amp;&amp; other)&#123; &#125;；<br>MyClass&amp; <span class="hljs-keyword">operator</span>=(MyClass&amp;&amp; other) &#123;<br>    <span class="hljs-keyword">if</span> (&amp;other != <span class="hljs-keyword">this</span>)&#123; &#125;<br>    <span class="hljs-keyword">return</span> *<span class="hljs-keyword">this</span>;<br>&#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="3-std-move"><a href="#3-std-move" class="headerlink" title="3 std::move"></a>3 std::move</h3><p>​	<code>std::move</code>不是移动资源的作用，它的功能是将一个左值转为右值，<code>触发移动语义</code>。</p>
-<h3 id="4-移动语义使用场景"><a href="#4-移动语义使用场景" class="headerlink" title="4 移动语义使用场景"></a>4 移动语义使用场景</h3><ul>
-<li>资源管理类</li>
-<li>大型对象和不可拷贝对象（<code>std::unique_str</code>、<code>std::mutex</code>）</li>
-</ul>
-<h2 id="三、完美转发"><a href="#三、完美转发" class="headerlink" title="三、完美转发"></a>三、完美转发</h2><h3 id="1-什么是完美转发？"><a href="#1-什么是完美转发？" class="headerlink" title="1 什么是完美转发？"></a>1 什么是完美转发？</h3><p>​	在泛型编程中，将函数的参数以<strong>原始的值类别</strong>（左值或右值）转发给其他函数，确保目标函数能正确选择重载版本（如拷贝或移动语义）。</p>
-<h3 id="2-完美转发实现关键点"><a href="#2-完美转发实现关键点" class="headerlink" title="2 完美转发实现关键点"></a>2 完美转发实现关键点</h3><ul>
-<li>将通用引用（右值）作为模板函数的参数类型</li>
-<li>使用<code>std::forward</code>传递参数，保持参数的左右值属性</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-function"><span class="hljs-keyword">decltype</span>(<span class="hljs-keyword">auto</span>) <span class="hljs-title">CallFunc</span><span class="hljs-params">(T&amp;&amp; v)</span></span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-built_in">targetFunc</span>(std::forward&lt;T&gt;(v)); &#125;<br></code></pre></td></tr></table></figure>
-
-<h3 id="3-移动语义使用场景"><a href="#3-移动语义使用场景" class="headerlink" title="3 移动语义使用场景"></a>3 移动语义使用场景</h3><ul>
-<li>包装器函数</li>
-</ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span>... Args&gt;<br><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">CallFunc</span><span class="hljs-params">(Args&amp;&amp;... args)</span></span>&#123;<span class="hljs-built_in">targetFunc</span>(std::forward&lt;Args&gt;(args)...);&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">auto</span> fncAdd = [=](<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)&#123;<span class="hljs-keyword">return</span> a + b;&#125;<br></code></pre></td></tr></table></figure>
 
 <ul>
-<li>工厂函数和对象创建</li>
+<li>返回for循环</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-keyword">typename</span>...Args&gt;<br><span class="hljs-function"><span class="hljs-keyword">decltype</span>(<span class="hljs-keyword">auto</span>) <span class="hljs-title">createObject</span><span class="hljs-params">(Args&amp;&amp;... args)</span></span>&#123;<span class="hljs-keyword">return</span> <span class="hljs-built_in">T</span>(std::forward&lt;Arsg&gt;(args)...);&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs C++">vector&lt;<span class="hljs-type">int</span>&gt; ids; <span class="hljs-keyword">for</span>(<span class="hljs-keyword">auto</span>&amp; elem: ids)&#123;&#125;<br></code></pre></td></tr></table></figure>
 
 <ul>
-<li>中间层函数</li>
+<li>泛型编程返回值类型</li>
 </ul>
-<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> Func, <span class="hljs-keyword">typename</span>...Args&gt;<br><span class="hljs-function"><span class="hljs-keyword">decltype</span>(<span class="hljs-keyword">auto</span>) <span class="hljs-title">logAndCall</span><span class="hljs-params">(Func&amp;&amp; func, Args&amp;&amp;...)</span></span><br><span class="hljs-function"></span>&#123;<br>    <span class="hljs-keyword">return</span> std::forward&lt;Func&gt;(func)(std::forward&lt;Args&gt;(args)...);<br>&#125;<br></code></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-keyword">typename</span> U&gt;<br><span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">add</span><span class="hljs-params">(T t, U u)</span> -&gt; <span class="hljs-title">decltype</span><span class="hljs-params">(t+u)</span></span>&#123; <span class="hljs-keyword">return</span> t+u;&#125;<br></code></pre></td></tr></table></figure>
 
+<h3 id="4-不能使用场景"><a href="#4-不能使用场景" class="headerlink" title="4 不能使用场景"></a>4 不能使用场景</h3><ul>
+<li>不能在函数参数中使用</li>
+<li>不能用于声明类的非静态成员变量</li>
+<li>不能用于定义数组</li>
+<li>不能用于模板参数（如：<code>vector&lt;auto&gt; ids;</code>）</li>
+</ul>
+<p>&#x3D;&#x3D;提醒&#x3D;&#x3D;：没有必要使用auto时，尽量不用使用，auto的过多使用，会增加代码阅读难度。</p>
+<h2 id="二、decltype"><a href="#二、decltype" class="headerlink" title="二、decltype"></a>二、decltype</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">decltype</span>(exp) name;<br></code></pre></td></tr></table></figure>
 
+<h3 id="1-推导规则-1"><a href="#1-推导规则-1" class="headerlink" title="1 推导规则"></a>1 推导规则</h3><ul>
+<li>如果<code>exp</code>是单独的变量、类成员访问表达式（<code>obj.member 或 ptr-&gt;member</code>）或者是一个没有<code>()</code>包围的表达式，那么<code>decltype(exp)</code>类型和<code>exp</code>类型一致；</li>
+<li>如果<code>exp</code>是一个函数调用，那么<code>decltype(exp)</code>类型和函数返回值一致（但函数不会执行）；</li>
+<li>如果<code>exp</code>是左值，或者<code>exp</code>是<code>()</code>包围的表达式，那么<code>decltype(exp)</code>类型是T&amp;;</li>
+<li>如果<code>exp</code>是一个 临时对象（右值），则 <code>decltype(exp)</code>类型为T，不带引用；</li>
+</ul>
+<p>&#x3D;&#x3D;注意&#x3D;&#x3D;：<code>1 decltype也是用于编译期间用于进行类型推导的</code></p>
+<p>​	     <code>2  decltype会保留表达式的引用和CV限定符属性</code></p>
+<h3 id="2-返回值类型后置（尾随返回值类型）"><a href="#2-返回值类型后置（尾随返回值类型）" class="headerlink" title="2 返回值类型后置（尾随返回值类型）"></a>2 返回值类型后置（尾随返回值类型）</h3><p>​	使用 <code>-&gt;</code> 后置返回类型，结合 <code>auto</code> 和 <code>decltype</code>：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-keyword">typename</span> U&gt;<br><span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">add</span><span class="hljs-params">(T t, U u)</span> -&gt; <span class="hljs-title">decltype</span><span class="hljs-params">(t+u)</span></span>&#123; <span class="hljs-keyword">return</span> t+u;&#125;<br></code></pre></td></tr></table></figure>
 
+<p><code>注意：从C++14开始，可以省略返回值类型后置（尾随返回值类型），需要保证多处return返回的类型一样</code></p>
+<h3 id="3-经典使用场景-1"><a href="#3-经典使用场景-1" class="headerlink" title="3 经典使用场景"></a>3 经典使用场景</h3><ul>
+<li>配合<code>auto</code>实现函数返回值类型推导</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-keyword">typename</span> U&gt;<br><span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">add</span><span class="hljs-params">(T t, U u)</span> -&gt; <span class="hljs-title">decltype</span><span class="hljs-params">(t+u)</span></span>&#123; <span class="hljs-keyword">return</span> t+u;&#125;<br></code></pre></td></tr></table></figure>
 
+<ul>
+<li>配合<code>std::declval</code>构造虚拟对象（不构造真实对象）进行类型推导（常用于模板元编程）</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">struct</span> <span class="hljs-title class_">Math</span>&#123;<span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>&#123;<span class="hljs-keyword">return</span> a+b;&#125;&#125;<br><span class="hljs-keyword">using</span>  t = <span class="hljs-keyword">decltype</span>(std::<span class="hljs-built_in">declval</span>&lt;Math&gt;().<span class="hljs-built_in">add</span>(<span class="hljs-number">1</span>,<span class="hljs-number">2</span>));<br></code></pre></td></tr></table></figure>
 
+<ul>
+<li><code>decltype(auto)</code>用于保留类型的CV限定符和引用属性，比如完美转发中函数的返回值(C++14起 )</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-function"><span class="hljs-keyword">decltype</span>(<span class="hljs-keyword">auto</span>) <span class="hljs-title">Func</span><span class="hljs-params">(T&amp;&amp; t)</span></span>&#123; <span class="hljs-keyword">return</span> <span class="hljs-built_in">Func1</span>(std::forward&lt;T&gt;(t));&#125;<br></code></pre></td></tr></table></figure>
 
+<h2 id="三、疑惑"><a href="#三、疑惑" class="headerlink" title="三、疑惑"></a>三、疑惑</h2><h3 id="1-泛型编程中函数返回值类型为啥不是由auto根据函数返回值类型决定，而是由decltype指定"><a href="#1-泛型编程中函数返回值类型为啥不是由auto根据函数返回值类型决定，而是由decltype指定" class="headerlink" title="1 泛型编程中函数返回值类型为啥不是由auto根据函数返回值类型决定，而是由decltype指定"></a>1 泛型编程中函数返回值类型为啥不是由<code>auto</code>根据函数返回值类型决定，而是由decltype指定</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T, <span class="hljs-keyword">typename</span> U&gt;<br><span class="hljs-function"><span class="hljs-keyword">auto</span> <span class="hljs-title">add</span><span class="hljs-params">(T t, U u)</span> -&gt; <span class="hljs-title">decltype</span><span class="hljs-params">(t+u)</span></span>&#123; <span class="hljs-keyword">return</span> t+u;&#125;<br></code></pre></td></tr></table></figure>
 
+<p>解答：函数的返回值类型需要在函数签名（编译期间）确定，这时还没有返回值（运行期间），因此当函数的返回值类型为<code>auto</code>时，其类型只能返回值类型后置的<code>decltype(exp)</code>来确定,<code>C++14</code>以上可以省略。</p>
 
                 
               </div>
@@ -400,8 +405,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>C++11 右值引用/移动语义/完美转发</div>
-      <div>https://kws128.github.io/2025/06/17/C++11 03 右值引用 l 移动语义 l 完美转发/</div>
+      <div>C++11 auto/decltype/返回值类型后置</div>
+      <div>https://kws128.github.io/2025/06/18/C++11 04 auto l decltype l 返回值类型后置/</div>
     </div>
     <div class="license-meta">
       
@@ -413,7 +418,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2025年6月17日</div>
+          <div>2025年6月18日</div>
         </div>
       
       
@@ -445,15 +450,15 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2025/06/17/C++11%2002%20C++11%20nullptr%20l%20%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" title="C++11 nullptr/智能指针">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">C++11 nullptr/智能指针</span>
-                        <span class="visible-mobile">上一篇</span>
-                      </a>
-                    
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2025/06/18/C++11%2005%20%E5%A4%9A%E7%BA%BF%E7%A8%8B%E6%94%AF%E6%8C%81/" title="C++11 多线程支持">
+                        <span class="hidden-mobile">C++11 多线程支持</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
