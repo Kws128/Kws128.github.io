@@ -19,21 +19,21 @@
   <meta name="author" content="Kws128">
   <meta name="keywords" content="">
   
-    <meta name="description" content="C++ 模板1 定义模板是程序员编写的一种与类型无关的代码结构（蓝图），用于生成不同类型的对应具体实现，并且只有在使用时才进行实例化，生成该类型的具体实现。 2 基本语法2.1 函数模板12template &lt;typename T1&gt;T add(T a, T b)&#123; return a + b;&#125;				  2.2 类模板123456template &lt;type">
+    <meta name="description" content="1 定义模板是程序员编写的一种与类型无关的代码结构（蓝图），用于生成不同类型的对应具体实现，并且只有在使用时才进行实例化，生成该类型的具体实现。 2 基本语法2.1 函数模板12template &lt;typename T1&gt;T add(T a, T b)&#123; return a + b;&#125;				  2.2 类模板123456template &lt;typename T">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Kws128&#39;s blog">
+<meta property="og:title" content="C++ 模板">
 <meta property="og:url" content="https://kws128.github.io/2025/06/18/C++%20%E6%A8%A1%E6%9D%BF/index.html">
 <meta property="og:site_name" content="Kws128&#39;s blog">
-<meta property="og:description" content="C++ 模板1 定义模板是程序员编写的一种与类型无关的代码结构（蓝图），用于生成不同类型的对应具体实现，并且只有在使用时才进行实例化，生成该类型的具体实现。 2 基本语法2.1 函数模板12template &lt;typename T1&gt;T add(T a, T b)&#123; return a + b;&#125;				  2.2 类模板123456template &lt;type">
+<meta property="og:description" content="1 定义模板是程序员编写的一种与类型无关的代码结构（蓝图），用于生成不同类型的对应具体实现，并且只有在使用时才进行实例化，生成该类型的具体实现。 2 基本语法2.1 函数模板12template &lt;typename T1&gt;T add(T a, T b)&#123; return a + b;&#125;				  2.2 类模板123456template &lt;typename T">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-06-17T19:07:06.961Z">
-<meta property="article:modified_time" content="2025-06-17T19:06:58.637Z">
+<meta property="article:published_time" content="2025-06-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-17T19:13:55.520Z">
 <meta property="article:author" content="Kws128">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>Kws128&#39;s blog</title>
+  <title>C++ 模板 - Kws128&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -199,7 +199,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text=""></span>
+            <span id="subtitle" data-typed-text="C++ 模板"></span>
           
         </div>
 
@@ -210,7 +210,7 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2025-06-18 03:07" pubdate>
+        <time datetime="2025-06-18 00:00" pubdate>
           2025年6月18日 凌晨
         </time>
       </span>
@@ -270,12 +270,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <h1 id="seo-header"></h1>
+            <h1 id="seo-header">C++ 模板</h1>
             
             
               <div class="markdown-body">
                 
-                <h1 id="C-模板"><a href="#C-模板" class="headerlink" title="C++ 模板"></a>C++ 模板</h1><h2 id="1-定义"><a href="#1-定义" class="headerlink" title="1 定义"></a>1 定义</h2><p>模板是程序员编写的一种与类型无关的代码结构（蓝图），用于生成不同类型的对应具体实现，并且只有在使用时才进行实例化，生成该类型的具体实现。</p>
+                <h2 id="1-定义"><a href="#1-定义" class="headerlink" title="1 定义"></a>1 定义</h2><p>模板是程序员编写的一种与类型无关的代码结构（蓝图），用于生成不同类型的对应具体实现，并且只有在使用时才进行实例化，生成该类型的具体实现。</p>
 <h2 id="2-基本语法"><a href="#2-基本语法" class="headerlink" title="2 基本语法"></a>2 基本语法</h2><h3 id="2-1-函数模板"><a href="#2-1-函数模板" class="headerlink" title="2.1 函数模板"></a>2.1 函数模板</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs c++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T1&gt;<br><span class="hljs-function">T <span class="hljs-title">add</span><span class="hljs-params">(T a, T b)</span></span>&#123; <span class="hljs-keyword">return</span> a + b;&#125;				<br></code></pre></td></tr></table></figure>
 
 <h3 id="2-2-类模板"><a href="#2-2-类模板" class="headerlink" title="2.2 类模板"></a>2.2 类模板</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">template</span> &lt;<span class="hljs-keyword">typename</span> T&gt;<br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Point</span>&#123;<br><span class="hljs-keyword">public</span>:<br>  	<span class="hljs-function">T <span class="hljs-title">getX</span><span class="hljs-params">()</span> <span class="hljs-type">const</span> </span>&#123; <span class="hljs-keyword">return</span> m_x; &#125;<br>  	T m_x; T m_y;<br>&#125;<br></code></pre></td></tr></table></figure>
@@ -404,6 +404,34 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%A1%86%E6%9E%B6/" class="category-chain-item">编程语言与框架</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%A1%86%E6%9E%B6/C/" class="category-chain-item">C++</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
   
 </div>
 
@@ -413,7 +441,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div></div>
+      <div>C++ 模板</div>
       <div>https://kws128.github.io/2025/06/18/C++ 模板/</div>
     </div>
     <div class="license-meta">
