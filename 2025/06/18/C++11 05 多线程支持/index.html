@@ -27,7 +27,7 @@
 <meta property="og:description" content="一、线程管理：std::thread1 支持的可调用对象 函数指针 lambda匿名函数（本质也是一种函数对象） 函数对象（仿函数）  1234void func(...) &#123; ... &#125;std::thread t1(func;						&#x2F;&#x2F; 函数指针std::thread t2([]()&#123;...&#125;);					&#x2F;&#x2F; lambdastd::thread t">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2025-06-17T16:00:00.000Z">
-<meta property="article:modified_time" content="2025-06-17T18:47:00.226Z">
+<meta property="article:modified_time" content="2025-06-17T19:00:25.829Z">
 <meta property="article:author" content="Kws128">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -282,7 +282,7 @@
 </ul>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">func</span><span class="hljs-params">(...)</span> </span>&#123; ... &#125;<br><span class="hljs-function">std::thread <span class="hljs-title">t1</span><span class="hljs-params">(func;						<span class="hljs-comment">// 函数指针</span></span></span><br><span class="hljs-params"><span class="hljs-function">std::thread t2([]()&#123;...&#125;);					<span class="hljs-comment">// lambda</span></span></span><br><span class="hljs-params"><span class="hljs-function">std::thread t3(Functor(), arg1, arg2); 		<span class="hljs-comment">// 函数对象</span></span></span><br></code></pre></td></tr></table></figure>
 
-<h2 id="2-参数传递和返回值"><a href="#2-参数传递和返回值" class="headerlink" title="2 参数传递和返回值"></a>2 参数传递和返回值</h2><ul>
+<h3 id="2-参数传递和返回值"><a href="#2-参数传递和返回值" class="headerlink" title="2 参数传递和返回值"></a>2 参数传递和返回值</h3><ul>
 <li>参数默认使用值传统，引用传统需显示使用<code>std::ref</code>指出;</li>
 <li><code>std::thread</code>默认没有设计直接获取返回值，但是可以通过引用类型的参数传回或者通过<code>std::promise</code>+<code>std::future</code>获取。</li>
 </ul>
@@ -377,7 +377,7 @@
 <li>最小临界区原则；</li>
 <li>小心嵌套锁导致的死锁（需嵌套锁时用 <code>std::recursive_mutex</code>）。</li>
 </ul>
-<h2 id="3-std-condition-variable-std-unique-lock"><a href="#3-std-condition-variable-std-unique-lock" class="headerlink" title="3 std::condition_variable + std::unique_lock"></a>3 <code>std::condition_variable</code> + <code>std::unique_lock</code></h2><h4 id="3-1-适用场景："><a href="#3-1-适用场景：" class="headerlink" title="3.1 适用场景："></a>3.1 <strong>适用场景</strong>：</h4><p>​	生产者-消费者模式（队列通信）、等待某个事件、定时唤醒+条件检查。</p>
+<h3 id="3-std-condition-variable-std-unique-lock"><a href="#3-std-condition-variable-std-unique-lock" class="headerlink" title="3 std::condition_variable + std::unique_lock"></a>3 <code>std::condition_variable</code> + <code>std::unique_lock</code></h3><h4 id="3-1-适用场景："><a href="#3-1-适用场景：" class="headerlink" title="3.1 适用场景："></a>3.1 <strong>适用场景</strong>：</h4><p>​	生产者-消费者模式（队列通信）、等待某个事件、定时唤醒+条件检查。</p>
 <h4 id="3-2-基础用法："><a href="#3-2-基础用法：" class="headerlink" title="3.2 基础用法："></a>3.2 <strong>基础用法</strong>：</h4><ul>
 <li><code>std::condition_variable</code>：条件变量<ul>
 <li><code>notify_one()</code>：唤醒一个正在等待该条件变量的线程（不确定是哪一个）；</li>
