@@ -227,13 +227,13 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/18/C++%20STL%E5%AE%B9%E5%99%A8/" target="_self">
+        <a href="/2025/06/18/C++%20STL/" target="_self">
           C++ STL
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/18/C++%20STL%E5%AE%B9%E5%99%A8/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/18/C++%20STL/" target="_self">
         <div>
           一、容器1 序列容器   特性\容器 array vector list forward_list deque    底层实现 固定大小数组 动态数组 双向链表 单向链表 多个固定大小数组   头部增删 不支持 O(n)需要移动后面所有元素 O(1) O(1) O(1)   中间增删 不支持 O(n) O(1) O(n)、O(1)已知前驱 O(n)   尾部增删 不支持 O(1)、插入时遇到重新分
         </div>
@@ -621,15 +621,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/17/C++11%2001%20Lambda%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0/" target="_self">
-          C++11 Lambda匿名函数
+        <a href="/2025/06/17/C++11%2003%20%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%20l%20%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89%20l%20%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91/" target="_self">
+          C++11 右值引用/移动语义/完美转发
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/17/C++11%2001%20Lambda%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/17/C++11%2003%20%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%20l%20%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89%20l%20%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91/" target="_self">
         <div>
-          一、 核心语法1234[capture-list](parameters)mutable -&gt; return-type&#123;    // func body&#125;  1 capture-list：外部变量捕获列表   例子 说明    [] 不捕获任何变量   [&#x3D;] 值捕获所有变量   [&amp;] 引用捕获所有变量   [x] 值捕获x变量   [&amp;x]
+          一、右值引用1 什么是右值？ 左值（Lvalue）：具有持久状态的对象，可以取地址，通常有名称。 右值（Rvalue）：临时对象或字面量，无法取地址，生命周期短暂。 纯右值（prvalue）：字面量、算术表达式结果、返回非引用的函数调用。 将亡值（xvalue）：通过右值引用标记的对象（如 std::move 的结果）    &#x3D;&#x3D;注意：左右值引用声明时一定要初始化&#x3D;&
         </div>
       </a>
 
@@ -689,15 +689,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/17/C++11%2003%20%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%20l%20%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89%20l%20%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91/" target="_self">
-          C++11 右值引用/移动语义/完美转发
+        <a href="/2025/06/17/C++11%2001%20Lambda%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0/" target="_self">
+          C++11 Lambda匿名函数
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/17/C++11%2003%20%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%20l%20%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89%20l%20%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/17/C++11%2001%20Lambda%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0/" target="_self">
         <div>
-          一、右值引用1 什么是右值？ 左值（Lvalue）：具有持久状态的对象，可以取地址，通常有名称。 右值（Rvalue）：临时对象或字面量，无法取地址，生命周期短暂。 纯右值（prvalue）：字面量、算术表达式结果、返回非引用的函数调用。 将亡值（xvalue）：通过右值引用标记的对象（如 std::move 的结果）    &#x3D;&#x3D;注意：左右值引用声明时一定要初始化&#x3D;&
+          一、 核心语法1234[capture-list](parameters)mutable -&gt; return-type&#123;    // func body&#125;  1 capture-list：外部变量捕获列表   例子 说明    [] 不捕获任何变量   [&#x3D;] 值捕获所有变量   [&amp;] 引用捕获所有变量   [x] 值捕获x变量   [&amp;x]
         </div>
       </a>
 
