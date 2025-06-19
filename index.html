@@ -227,15 +227,198 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/18/C++%20STL/" target="_self">
-          C++ STL
+        <a href="/2025/06/20/C++%20%E5%9B%9B%E7%A7%8D%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" target="_self">
+          C++ 四种强制类型转换
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/18/C++%20STL/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/20/C++%20%E5%9B%9B%E7%A7%8D%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" target="_self">
         <div>
-          一、容器1 序列容器   特性\容器 array vector list forward_list deque    底层实现 固定大小数组 动态数组 双向链表 单向链表 多个固定大小数组   头部增删 不支持 O(n)需要移动后面所有元素 O(1) O(1) O(1)   中间增删 不支持 O(n) O(1) O(n)、O(1)已知前驱 O(n)   尾部增删 不支持 O(1)、插入时遇到重新分
+          1 为什么引入C风格的强制转换(type)expression存在的以下问题：  过于强大：可以执行任何类型转换，容易出错； 不安全：很多不合理的转换在编译期无法监测； 意图不明确：在语法上看不出转换的具体目的； 难以搜索：C++代码中到处都是()符号，难以查找哪个是类型转换。  C++的四种类型转换各自有明确的语义，编译器可以更好地检查转换的合理性，代码可读性也更强。 2 四种类型转换详解2.1
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-20 00:00" pubdate>
+              2025-06-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%A1%86%E6%9E%B6/" class="category-chain-item">编程语言与框架</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%A1%86%E6%9E%B6/C/" class="category-chain-item">C++</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/20/SQL%20Server%20DDL%E8%A7%A6%E5%8F%91%E5%99%A8/" target="_self">
+          SQL Server DML触发器
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/20/SQL%20Server%20DDL%E8%A7%A6%E5%8F%91%E5%99%A8/" target="_self">
+        <div>
+          1 DML触发器的定义DML触发器是一种通过事件触发而被自动调用并且只针对表的特殊存储过程。 2 DML触发器分类 after触发器(之后触发,一表多触)  instead of触发器(之前触发,一表一触)   after触发器要求只有执行定义操作之后才会触发，且只能定义在表上，而instead of触发器并不执行其定义的操作而是仅执行触发器本身，优先极高于触发语句的执行。 3 触发器中的虚拟表：
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-20 00:00" pubdate>
+              2025-06-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" class="category-chain-item">工具使用</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/SQL-Server/" class="category-chain-item">SQL Server</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/20/VS%E7%9B%B8%E5%AF%B9%E8%B7%AF%E5%BE%84%E8%AE%BE%E7%BD%AE/" target="_self">
+          VS相对路径设置
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/20/VS%E7%9B%B8%E5%AF%B9%E8%B7%AF%E5%BE%84%E8%AE%BE%E7%BD%AE/" target="_self">
+        <div>
+          在使用VS编写代码时，需要设置各种目录路径或者需要包含不在同目录下的头文件时需要附带头文件路径，这两种情况都可以直接设置成绝对路径，但是在转移代码时，往往因为配置了绝对路径在转移后绝对路径不对而导致编译不了，需要重新修改之前配置的绝对路径，耗时耗力，如果使用相对路径就可以避免这种情况。 1 基础要点 相对路径是指相对于项目的*.vcxproj文件所在的目录；* “..&#x2F;”表示项目的
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-20 00:00" pubdate>
+              2025-06-20
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/" class="category-chain-item">工具使用</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/Visual-Studio/" class="category-chain-item">Visual Studio</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/18/C++%20%E6%A8%A1%E6%9D%BF/" target="_self">
+          C++ 模板
+        </a>
+      </h2>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/18/C++%20%E6%A8%A1%E6%9D%BF/" target="_self">
+        <div>
+          1 定义模板是程序员编写的一种与类型无关的代码结构（蓝图），用于生成不同类型的对应具体实现，并且只有在使用时才进行实例化，生成该类型的具体实现。 2 基本语法2.1 函数模板12template &lt;typename T1&gt;T add(T a, T b)&#123; return a + b;&#125;				  2.2 类模板123456template &lt;typename T
         </div>
       </a>
 
@@ -288,15 +471,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/18/C++%20%E6%A8%A1%E6%9D%BF/" target="_self">
-          C++ 模板
+        <a href="/2025/06/18/C++%20STL/" target="_self">
+          C++ STL
         </a>
       </h2>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/18/C++%20%E6%A8%A1%E6%9D%BF/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/18/C++%20STL/" target="_self">
         <div>
-          1 定义模板是程序员编写的一种与类型无关的代码结构（蓝图），用于生成不同类型的对应具体实现，并且只有在使用时才进行实例化，生成该类型的具体实现。 2 基本语法2.1 函数模板12template &lt;typename T1&gt;T add(T a, T b)&#123; return a + b;&#125;				  2.2 类模板123456template &lt;typename T
+          一、容器1 序列容器   特性\容器 array vector list forward_list deque    底层实现 固定大小数组 动态数组 双向链表 单向链表 多个固定大小数组   头部增删 不支持 O(n)需要移动后面所有元素 O(1) O(1) O(1)   中间增删 不支持 O(n) O(1) O(n)、O(1)已知前驱 O(n)   尾部增删 不支持 O(1)、插入时遇到重新分
         </div>
       </a>
 
@@ -553,142 +736,6 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h2 class="index-header">
         
-        <a href="/2025/06/17/C++11%2002%20C++11%20nullptr%20l%20%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" target="_self">
-          C++11 nullptr/智能指针
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/17/C++11%2002%20C++11%20nullptr%20l%20%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" target="_self">
-        <div>
-          一、nullptr传统的NULL被定为为0或者(void*)0,存在二义性，因此引入nullptr 12345void func(int) &#123;std::cout&lt;&lt;&quot;int&quot;&lt;&lt;std::endl;&#125;void func(int*) &#123;std::cout&lt;&lt;&quot;int *&quot;&lt;&lt;std:
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-06-17 00:00" pubdate>
-              2025-06-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%A1%86%E6%9E%B6/" class="category-chain-item">编程语言与框架</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%A1%86%E6%9E%B6/C/" class="category-chain-item">C++</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%A1%86%E6%9E%B6/C/C-11/" class="category-chain-item">C++11</a>
-  
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
-        <a href="/2025/06/17/C++11%2003%20%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%20l%20%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89%20l%20%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91/" target="_self">
-          C++11 右值引用/移动语义/完美转发
-        </a>
-      </h2>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/17/C++11%2003%20%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%20l%20%E7%A7%BB%E5%8A%A8%E8%AF%AD%E4%B9%89%20l%20%E5%AE%8C%E7%BE%8E%E8%BD%AC%E5%8F%91/" target="_self">
-        <div>
-          一、右值引用1 什么是右值？ 左值（Lvalue）：具有持久状态的对象，可以取地址，通常有名称。 右值（Rvalue）：临时对象或字面量，无法取地址，生命周期短暂。 纯右值（prvalue）：字面量、算术表达式结果、返回非引用的函数调用。 将亡值（xvalue）：通过右值引用标记的对象（如 std::move 的结果）    &#x3D;&#x3D;注意：左右值引用声明时一定要初始化&#x3D;&
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2025-06-17 00:00" pubdate>
-              2025-06-17
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%A1%86%E6%9E%B6/" class="category-chain-item">编程语言与框架</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%A1%86%E6%9E%B6/C/" class="category-chain-item">C++</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%A1%86%E6%9E%B6/C/C-11/" class="category-chain-item">C++11</a>
-  
-  
-
-  
-
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h2 class="index-header">
-        
         <a href="/2025/06/17/C++11%2001%20Lambda%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0/" target="_self">
           C++11 Lambda匿名函数
         </a>
@@ -751,7 +798,81 @@
     </article>
   </div>
 
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h2 class="index-header">
+        
+        <a href="/2025/06/17/C++11%2002%20C++11%20nullptr%20l%20%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" target="_self">
+          C++11 nullptr/智能指针
+        </a>
+      </h2>
 
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2025/06/17/C++11%2002%20C++11%20nullptr%20l%20%E6%99%BA%E8%83%BD%E6%8C%87%E9%92%88/" target="_self">
+        <div>
+          一、nullptr传统的NULL被定为为0或者(void*)0,存在二义性，因此引入nullptr 12345void func(int) &#123;std::cout&lt;&lt;&quot;int&quot;&lt;&lt;std::endl;&#125;void func(int*) &#123;std::cout&lt;&lt;&quot;int *&quot;&lt;&lt;std:
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2025-06-17 00:00" pubdate>
+              2025-06-17
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%A1%86%E6%9E%B6/" class="category-chain-item">编程语言与框架</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%A1%86%E6%9E%B6/C/" class="category-chain-item">C++</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80%E4%B8%8E%E6%A1%86%E6%9E%B6/C/C-11/" class="category-chain-item">C++11</a>
+  
+  
+
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+      </div>
+    </article>
+  </div>
+
+
+
+  <nav aria-label="navigation">
+    <span class="pagination" id="pagination">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/#board">2</a><a class="extend next" rel="next" href="/page/2/#board"><i class="iconfont icon-arrowright"></i></a>
+    </span>
+  </nav>
 
 
 
