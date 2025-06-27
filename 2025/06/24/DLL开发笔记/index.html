@@ -1,0 +1,865 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
+  <link rel="icon" href="/img/fluid.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Kws128">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="1 DLL 导出函数和导出类1.1 导出函数（建议导出C风格接口）1.1.1 __declspec(dllexport) 方式 使用场景：在不需要控制导出函数顺序和导出函数精确名称时的场景使用。 示例代码：  12345678910111213141516171819&#x2F;&#x2F;&#x2F; math.h#pragma once#include &lt;windows.h&gt;#ifndef MATHDLL_EX">
+<meta property="og:type" content="article">
+<meta property="og:title" content="DLL开发笔记">
+<meta property="og:url" content="https://kws128.github.io/2025/06/24/DLL%E5%BC%80%E5%8F%91%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:site_name" content="Kws128&#39;s blog">
+<meta property="og:description" content="1 DLL 导出函数和导出类1.1 导出函数（建议导出C风格接口）1.1.1 __declspec(dllexport) 方式 使用场景：在不需要控制导出函数顺序和导出函数精确名称时的场景使用。 示例代码：  12345678910111213141516171819&#x2F;&#x2F;&#x2F; math.h#pragma once#include &lt;windows.h&gt;#ifndef MATHDLL_EX">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-06-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2025-06-24T14:24:40.437Z">
+<meta property="article:author" content="Kws128">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>DLL开发笔记 - Kws128&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"kws128.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Kws128&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="DLL开发笔记"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2025-06-24 00:00" pubdate>
+          2025年6月24日 凌晨
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          21 分钟
+        
+      </span>
+    
+
+    
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">DLL开发笔记</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="1-DLL-导出函数和导出类"><a href="#1-DLL-导出函数和导出类" class="headerlink" title="1 DLL 导出函数和导出类"></a>1 DLL 导出函数和导出类</h2><h3 id="1-1-导出函数（建议导出C风格接口）"><a href="#1-1-导出函数（建议导出C风格接口）" class="headerlink" title="1.1 导出函数（建议导出C风格接口）"></a>1.1 导出函数（建议导出C风格接口）</h3><h4 id="1-1-1-declspec-dllexport-方式"><a href="#1-1-1-declspec-dllexport-方式" class="headerlink" title="1.1.1 __declspec(dllexport) 方式"></a>1.1.1 __declspec(dllexport) 方式</h4><ul>
+<li><strong>使用场景</strong>：在不需要控制导出函数顺序和导出函数精确名称时的场景使用。</li>
+<li><strong>示例代码</strong>：</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">/// math.h</span><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> once</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;windows.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> MATHDLL_EXPORT</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MATH_API_EXPORT __declspec(dllexport)</span><br><span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MATH_API_EXPORT __declspec(dllimport)</span><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><br><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> &#123;<br>    <span class="hljs-function">MATH_API_EXPORT <span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span>;<br>    <span class="hljs-function">MATH_API_EXPORT <span class="hljs-type">int</span> <span class="hljs-title">max</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span>;<br>&#125;<br><br><span class="hljs-comment">/// math.cpp</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MATHDLL_EXPORT</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;math&quot;</span></span><br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span>&#123; <span class="hljs-keyword">return</span> a + b;&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">max</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span>&#123; <span class="hljs-keyword">return</span> (a &gt; b ? a : b); &#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="1-1-2-def文件方式"><a href="#1-1-2-def文件方式" class="headerlink" title="1.1.2 .def文件方式"></a>1.1.2 .def文件方式</h4><ul>
+<li><strong>使用场景</strong>：在需要控制导出函数顺序和导出函数精确名称时的场景使用。</li>
+<li><strong>示例代码</strong>：</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">/// math.h</span><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> once</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;windows.h&gt;</span></span><br><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> &#123;<br>    <span class="hljs-function"><span class="hljs-type">int</span> WINAPI <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span>;<br>    <span class="hljs-function"><span class="hljs-type">int</span> __stdcall <span class="hljs-title">max</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span>;<br>&#125;<br><br><span class="hljs-comment">/// math.cpp</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;math.h&quot;</span></span><br><span class="hljs-function"><span class="hljs-type">int</span> WINAPI <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span>&#123; <span class="hljs-keyword">return</span> a + b;&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> WINAPI <span class="hljs-title">max</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span>&#123; <span class="hljs-keyword">return</span> (a &gt; b ? a : b); &#125;<br><br><span class="hljs-comment">/// math.def</span><br>LIBRARY <span class="hljs-string">&quot;Math&quot;</span><br>    EXPORTS<br>    	add	@<span class="hljs-number">1</span><br>    	max @<span class="hljs-number">2</span> NONAME  <br><span class="hljs-comment">/// max @2 NONAME是匿名导出，增加被逆向的难度，调用时通过顺序获取函数地</span><br><span class="hljs-comment">/// 址：FARPROC pFunc = GetProcAddress(hDll, MAKEINTRESOURCE(2));</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>提示</strong>：推荐 __declspec(dllexport) + extern “C” + .def一起使用，功能最强。</p>
+<h3 id="1-2-导出类"><a href="#1-2-导出类" class="headerlink" title="1.2 导出类"></a>1.2 导出类</h3><h4 id="1-2-1-declspec-dllexport-方式导出整个类（推荐）"><a href="#1-2-1-declspec-dllexport-方式导出整个类（推荐）" class="headerlink" title="1.2.1 __declspec(dllexport) 方式导出整个类（推荐）"></a>1.2.1 __declspec(dllexport) 方式导出整个类（推荐）</h4><ul>
+<li><strong>使用场景</strong>：不需要精细化控制导出那些函数时使用，导出整个类，跨模块自动处理RTTI、虚函数表、继承等。</li>
+<li><strong>示例代码</strong>：</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">/// math.h</span><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> once</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;windows.h&gt;</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">ifndef</span> MATHDLL_EXPORT</span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MATH_API_EXPORT __declspec(dllexport)</span><br><span class="hljs-meta">#<span class="hljs-keyword">else</span></span><br><span class="hljs-meta">#<span class="hljs-keyword">define</span> MATH_API_EXPORT __declspec(dllimport)</span><br><span class="hljs-meta">#<span class="hljs-keyword">endif</span></span><br><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">MATH_API_EXPORT</span> CMath&#123;<br><span class="hljs-keyword">public</span>:<br>    <span class="hljs-built_in">CMath</span>();<br>    <span class="hljs-keyword">virtual</span> ~<span class="hljs-built_in">CMath</span>();<br>    <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span>;<br>&#125;<br><br><span class="hljs-comment">/// math.cpp</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;math.h&quot;</span></span><br>CMath::<span class="hljs-built_in">CMath</span>()&#123;...&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">CMath::add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>&#123; <span class="hljs-keyword">return</span> a + b;&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="1-2-2-declspec-dllexport-方式精细化控制导出函数-慎用"><a href="#1-2-2-declspec-dllexport-方式精细化控制导出函数-慎用" class="headerlink" title="1.2.2 __declspec(dllexport) 方式精细化控制导出函数(慎用)"></a>1.2.2 __declspec(dllexport) 方式精细化控制导出函数(慎用)</h4><ul>
+<li><strong>使用场景</strong>：需要精细化控制导出那些函数时使用，无法导出虚函数表、RTTI、继承等机制，慎用（尤其有虚函数时）。</li>
+<li><strong>示例代码</strong>：</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-comment">/// math.h</span><br><span class="hljs-meta">#<span class="hljs-keyword">pragma</span> once</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&lt;windows.h&gt;</span></span><br><br><span class="hljs-keyword">class</span>  <span class="hljs-title class_">CMath</span>&#123;<br><span class="hljs-keyword">public</span>:<br>    __declspec(dllexport) <span class="hljs-built_in">CMath</span>();<br>    <span class="hljs-keyword">virtual</span> __declspec(dllexport) ~<span class="hljs-built_in">CMath</span>();<br>    __declspec(dllexport) <span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span></span>;<br>&#125;<br><br><span class="hljs-comment">/// math.cpp</span><br><span class="hljs-meta">#<span class="hljs-keyword">include</span> <span class="hljs-string">&quot;math.h&quot;</span></span><br>CMath::<span class="hljs-built_in">CMath</span>()&#123;...&#125;<br>CMath::~<span class="hljs-built_in">CMath</span>()&#123;...&#125;<br><span class="hljs-function"><span class="hljs-type">int</span> <span class="hljs-title">CMath::add</span><span class="hljs-params">(<span class="hljs-type">int</span> a, <span class="hljs-type">int</span> b)</span> </span>&#123; <span class="hljs-keyword">return</span> a + b;&#125;<br></code></pre></td></tr></table></figure>
+
+<h2 id="2-DllMain入口函数（可选）"><a href="#2-DllMain入口函数（可选）" class="headerlink" title="2 DllMain入口函数（可选）"></a>2 DllMain入口函数（可选）</h2><h3 id="2-1-基础实现"><a href="#2-1-基础实现" class="headerlink" title="2.1 基础实现"></a>2.1 基础实现</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function">BOOL APIENTRY <span class="hljs-title">DllMain</span><span class="hljs-params">(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)</span></span>&#123;<br>    <span class="hljs-keyword">switch</span>(ul_reason_for_call)&#123;<br>    <span class="hljs-keyword">case</span> DLL_PROCESS_ATTACH:&#123; &#125;<span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> DLL_THREAD_ATTACH:&#123; &#125;<span class="hljs-keyword">break</span>; <br>    <span class="hljs-keyword">case</span> DLL_THREAD_DETACH:&#123; &#125;<span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> DLL_PROCESS_DETACH:&#123; &#125;<span class="hljs-keyword">break</span>;    <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-1-1-参数详解"><a href="#2-1-1-参数详解" class="headerlink" title="2.1.1 参数详解"></a>2.1.1 参数详解</h4><ul>
+<li><code>hModule</code>：<strong>模块句柄</strong>，其实就是DLL在内存的基地址，可以使用该句柄调用相关API获取DLL的路径、名称、大小、资源信息、基地址等信息；</li>
+<li><code>ul_reason_for_call</code>：<strong>DllMain被调用原因</strong>；</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>值</th>
+<th>触发时机</th>
+<th>意义</th>
+<th>注意事项</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DLL_PROCESS_ATTACH</td>
+<td>进程首次加载DLL时会收到该通知（仅此一次），不管是隐式加载还是显示加载</td>
+<td>初始化 DLL 的全局资源、数据结构，以及为该进程内所有线程做好准备</td>
+<td></td>
+</tr>
+<tr>
+<td>DLL_PROCESS_DETACH</td>
+<td>1-加载进程正常终止卸载该DLL时（最后加载的DLL先收到通知），2-显示调用FreeLibrary使DLL引用计数归零卸载该DLL时</td>
+<td>释放所有在 DLL_PROCESS_ATTACH 中分配的<strong>全局资源</strong></td>
+<td>1-避免使用其他dll（可能在当前dll前面卸载）和自身导出函数， 2-在DLL有多线程执行的情况下，卸载时其他线程可能正在执行DLL代码，会造成访问违规，导出清理接口，清理完所有资源再卸载dll</td>
+</tr>
+<tr>
+<td>DLL_THREAD_ATTACH</td>
+<td>1-显示调用CreateThread&#x2F;_beginthreadex创建线程，2-COM组件创建的STA线程，3-线程池的工作线程（<strong>首次创建时</strong>），4-Windows消息循环创建的UI线程， 5-驱动程序回调线程， CLR管理的托管线程，6-CLR管理的托管线程</td>
+<td>初始化与新建线程关联的资源，例如 TLS 数据、线程句柄、线程局部缓存等</td>
+<td>1-RtlCreateUserThread创建的线程，由于绕过标准通知机制，不会收到该通知，2-线程池复用线程和纤程(Fiber)转换并非真正线程也不会收到该通知，3-可在收到DLL_PROCESS_ATTACH通知时调用DisableThreadLibraryCalls禁用线程创建和销毁通知提高性能</td>
+</tr>
+<tr>
+<td>DLL_THREAD_DETACH</td>
+<td>1-线程自然退出（ExitThread&#x2F; return from thread func），2-主线程退出且进程未终止，3-使用 FreeLibrary()卸载 DLL，4-使用 FreeLibraryAndExitThread()结束线程，5-使用 ExitProcess()结束整个进程（可能触发）</td>
+<td>释放所有在 DLL_THREAD_ATTACH中分配的<strong>资源</strong></td>
+<td>1-调用TerminateThread()强行 终止线程不会收到该通知</td>
+</tr>
+</tbody></table>
+<ul>
+<li><code>lpReserved</code>：<strong>保留字段</strong>，在不同<code>ul_reason_for_call</code>值下携带的上下文信息。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>ul_reason_for_call值</th>
+<th>lpReserved值</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>DLL_PROCESS_ATTACH</td>
+<td>非NULL –&gt; 静态连接DLL（即由EXE自动加载），<br />NULL    –&gt; 调用LoadLibrary动态加载</td>
+</tr>
+<tr>
+<td>DLL_PROCESS_DETACH</td>
+<td>非NULL –&gt; 加载进程正在退出（系统自动卸载DLL），<br />NULL    –&gt; 调用FreeLibrary主动卸载</td>
+</tr>
+<tr>
+<td>DLL_THREAD_ATTACH&#x2F; DETACH</td>
+<td>始终为 NULL，无特殊含义</td>
+</tr>
+</tbody></table>
+<h4 id="2-1-2-返回值"><a href="#2-1-2-返回值" class="headerlink" title="2.1.2 返回值"></a>2.1.2 返回值</h4><ul>
+<li>当 <code>ul_reason_for_call</code>值为DLL_PROCESS_ATTACH时（返回值有实际意义）<ul>
+<li>返回TRUE表示DLL初始化成功，加载成功；</li>
+<li>返回FALSE表示DLL初始化失败，加载失败，立即调用 <code>DLL_PROCESS_DETACH</code>（此时 <code>lpReserved</code> 参数非NULL）；对于显式加载(<code>LoadLibrary</code>)：<code>LoadLibrary</code> 返回 NULL；对于隐式加载：进程启动失败。</li>
+</ul>
+</li>
+<li>当<code>ul_reason_for_call</code>值为DLL_PROCESS_DETACH&#x2F;DLL_THREAD_ATTACH&#x2F;DLL_THREAD_DETACH时返回值没有实际意义，会被系统忽略，但是还是建议返回TRUE。</li>
+</ul>
+<h3 id="2-2-DllMain编写时的注意事项"><a href="#2-2-DllMain编写时的注意事项" class="headerlink" title="2.2 DllMain编写时的注意事项"></a>2.2 DllMain编写时的注意事项</h3><h4 id="2-2-1-不要在DllMain里加载和卸载其他DLL"><a href="#2-2-1-不要在DllMain里加载和卸载其他DLL" class="headerlink" title="2.2.1 不要在DllMain里加载和卸载其他DLL"></a>2.2.1 不要在DllMain里加载和卸载其他DLL</h4><table>
+<thead>
+<tr>
+<th>禁止函数</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>LoadLibrary &#x2F; FreeLibrary</td>
+<td>Loader正在持锁，递归加载会导致死锁</td>
+</tr>
+<tr>
+<td>CoInitialize &#x2F; CoCreateInstance</td>
+<td>可能加载 COM DLL，风险同上</td>
+</tr>
+<tr>
+<td>创建 COM 对象 &#x2F; 启用 WMI &#x2F; 使用 ShellExecute等</td>
+<td>可能隐式加载系统 DLL，如 shell32.dll、oleaut32.dll</td>
+</tr>
+</tbody></table>
+<h4 id="2-2-2-不要执行等待-堵塞操作"><a href="#2-2-2-不要执行等待-堵塞操作" class="headerlink" title="2.2.2 不要执行等待&#x2F;堵塞操作"></a>2.2.2 不要执行等待&#x2F;堵塞操作</h4><table>
+<thead>
+<tr>
+<th>禁止操作</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>WaitForSingleObject、Sleep、ReadFile 等</td>
+<td>Loader 正在初始化 DLL，阻塞会卡死整个进程</td>
+</tr>
+</tbody></table>
+<h4 id="2-2-3-所有初始化必须是“快速、安全、局部”的"><a href="#2-2-3-所有初始化必须是“快速、安全、局部”的" class="headerlink" title="2.2.3 所有初始化必须是“快速、安全、局部”的"></a>2.2.3 所有初始化必须是“快速、安全、局部”的</h4><p>只允许做如下操作：</p>
+<ul>
+<li>TLS索引申请（TlsAlloc）</li>
+<li>分配DLL自己的全局资源</li>
+<li>写日志（非堵塞）</li>
+</ul>
+<h4 id="2-2-3-在DllMain中使用创建线程时需要注意以下问题"><a href="#2-2-3-在DllMain中使用创建线程时需要注意以下问题" class="headerlink" title="2.2.3 在DllMain中使用创建线程时需要注意以下问题"></a>2.2.3 在DllMain中使用创建线程时需要注意以下问题</h4><table>
+<thead>
+<tr>
+<th>禁止操作</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>不要在DllMain中等待线程完成（如调用WaitForSingleObject等）</td>
+<td>Loader 会死锁</td>
+</tr>
+<tr>
+<td>不要在新线程函数内调用 DLL 导出函数访问未初始化数据</td>
+<td>可能访问野指针、NULL、崩溃</td>
+</tr>
+<tr>
+<td>不要在新线程函数内加载和卸载其他DLL</td>
+<td>会触发递归 DllMain，Loader 锁未释放，死锁</td>
+</tr>
+</tbody></table>
+<p>在DllMain内创建线程逻辑越简单、独立越好，以下是在DllMain内创建线程推荐的、安全的写法：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function">DWORD WINAPI <span class="hljs-title">WorkThread</span><span class="hljs-params">(LPVOID lpParam)</span></span>&#123;<br>    <span class="hljs-comment">/// 不能再访问DLL自身导出函数</span><br>    <span class="hljs-comment">/// something</span><br>    <span class="hljs-keyword">return</span> <span class="hljs-number">0</span>;<br>&#125;<br><br><span class="hljs-function">BOOL APIENTRY <span class="hljs-title">DllMain</span><span class="hljs-params">(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)</span></span>&#123;<br>    <span class="hljs-keyword">switch</span>(ul_reason_for_call)&#123;<br>    <span class="hljs-keyword">case</span> DLL_PROCESS_ATTACH:&#123;<br>    	<span class="hljs-built_in">DisableThreadLibraryCalls</span>(hinstDLL); <span class="hljs-comment">// 避免不必要的 DllMain回调</span><br>        <span class="hljs-type">uintptr_t</span> hThread = _beginthreadex(<br>                                <span class="hljs-literal">nullptr</span>,     <span class="hljs-comment">// 安全属性</span><br>                                <span class="hljs-number">0</span>,           <span class="hljs-comment">// 栈大小</span><br>                                ThreadProc,  <span class="hljs-comment">// 线程函数</span><br>                                <span class="hljs-literal">nullptr</span>,     <span class="hljs-comment">// 参数</span><br>                                <span class="hljs-number">0</span>,           <span class="hljs-comment">// 创建标志</span><br>                                <span class="hljs-literal">nullptr</span>      <span class="hljs-comment">// 线程ID</span><br>           							      );<br>        <span class="hljs-comment">/// 不需要句柄时，立马释放，防止泄漏 </span><br>        <span class="hljs-keyword">if</span> (hThread) &#123; <span class="hljs-built_in">CloseHandle</span>(<span class="hljs-built_in">reinterpret_cast</span>&lt;HANDLE&gt;(hThread));&#125;<br>    &#125;<span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> DLL_THREAD_ATTACH:&#123; &#125;<span class="hljs-keyword">break</span>; <br>    <span class="hljs-keyword">case</span> DLL_THREAD_DETACH:&#123; &#125;<span class="hljs-keyword">break</span>;<br>    <span class="hljs-keyword">case</span> DLL_PROCESS_DETACH:&#123; &#125;<span class="hljs-keyword">break</span>;    <br>    &#125;<br>&#125;<br></code></pre></td></tr></table></figure>
+
+<h4 id="2-2-4-不能调用malloc-free、new-delete、STL容器操作"><a href="#2-2-4-不能调用malloc-free、new-delete、STL容器操作" class="headerlink" title="2.2.4 不能调用malloc&#x2F;free、new&#x2F;delete、STL容器操作"></a>2.2.4 不能调用malloc&#x2F;free、new&#x2F;delete、STL容器操作</h4><ul>
+<li><p><strong>加载器锁（Loader Lock）的限制</strong>：</p>
+<ul>
+<li>DllMain 是在加载器锁的上下文中执行的，而 new&#x2F;delete 或 STL 容器的操作可能依赖 堆管理器（Heap Manager）或 CRT（C Runtime Library）初始化。</li>
+<li>如果这些操作尝试获取另一个锁（如堆管理器的锁），而该锁已经被其他线程持有，可能会导致 <strong>死锁</strong>（Deadlock）</li>
+</ul>
+</li>
+<li><p><strong>CRT（C Runtime Library）可能未初始化</strong>，此时调用 new&#x2F;delete或 STL 操作可能导致未定义行为</p>
+</li>
+<li><p><strong>线程安全问题</strong>，DllMain&#96;是在加载器锁的保护下执行的，但某些 STL 实现（如 MSVC 的 STL）可能使用线程局部存储（TLS）或 全局锁，这可能导致：</p>
+<ul>
+<li><strong>死锁</strong>（如果锁已被其他线程持有；</li>
+<li><strong>数据竞争</strong>（如果 STL 内部状态未正确同步）。</li>
+</ul>
+</li>
+<li><p><strong>可能导致递归加载</strong>，如果 new&#x2F;delete 或 STL 操作触发了另一个 DLL 的加载（例如，某些调试版本的 STL 可能加载额外的调试 DLL），则会导致 递归进入 DllMain，而 Windows 的加载器锁不支持递归，可能导致崩溃</p>
+</li>
+</ul>
+<p><strong>注意</strong>：STL 容器内部会调用new&#x2F;delete。</p>
+<h2 id="3-开发稳健DLL的建议"><a href="#3-开发稳健DLL的建议" class="headerlink" title="3 开发稳健DLL的建议"></a>3 开发稳健DLL的建议</h2><h3 id="3-1-设计阶段"><a href="#3-1-设计阶段" class="headerlink" title="3.1 设计阶段"></a>3.1 设计阶段</h3><h4 id="3-1-1-接口尽量简单、明确"><a href="#3-1-1-接口尽量简单、明确" class="headerlink" title="3.1.1 接口尽量简单、明确"></a>3.1.1 接口尽量简单、明确</h4><ul>
+<li>尽量只导出C风格（extern “C”）接口，避免C++名字修饰</li>
+<li>若需要导出类，建议适应纯虚接口 + 工厂函数模式（详见COM风格设计）</li>
+</ul>
+<h4 id="3-1-2-版本兼容性"><a href="#3-1-2-版本兼容性" class="headerlink" title="3.1.2 版本兼容性"></a>3.1.2 版本兼容性</h4><ul>
+<li>设计获取DLL版本导出接口</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> __declspec(dllexport) <span class="hljs-function"><span class="hljs-type">double</span> <span class="hljs-title">GetDllInterfaceVersion</span><span class="hljs-params">()</span> <span class="hljs-type">const</span></span>;<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>不要随意修改已有导出函数的签名，新增函数而非替换。</li>
+</ul>
+<h4 id="3-1-3-封装内存管理"><a href="#3-1-3-封装内存管理" class="headerlink" title="3.1.3 封装内存管理"></a>3.1.3 封装内存管理</h4><ul>
+<li>尽量不要将内存分配和释放的责任交给外部调用，由DLL提供配套内存管理接口(可以导出)。</li>
+</ul>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> <span class="hljs-function">MyObject* <span class="hljs-title">CreateObject</span><span class="hljs-params">()</span></span>;<br><span class="hljs-keyword">extern</span> <span class="hljs-string">&quot;C&quot;</span> <span class="hljs-function"><span class="hljs-type">void</span> <span class="hljs-title">ReleaseObject</span><span class="hljs-params">(MyObject*)</span></span>;<br></code></pre></td></tr></table></figure>
+
+<h3 id="3-2-实现阶段"><a href="#3-2-实现阶段" class="headerlink" title="3.2 实现阶段"></a>3.2 实现阶段</h3><h4 id="3-2-1-慎用全局对象-单例"><a href="#3-2-1-慎用全局对象-单例" class="headerlink" title="3.2.1 慎用全局对象&#x2F;单例"></a>3.2.1 慎用全局对象&#x2F;单例</h4><ul>
+<li>全局对象的构造顺序和析构顺序不可控，容易导致崩溃；</li>
+<li>推荐显式初始化+释放机制，或使用懒加载的线程安全静态局部变量。</li>
+</ul>
+<h4 id="3-2-2-DllMain-编写注意"><a href="#3-2-2-DllMain-编写注意" class="headerlink" title="3.2.2 DllMain 编写注意"></a>3.2.2 DllMain 编写注意</h4><p>详见：2.2 DllMain编写时的注意事项。</p>
+<h4 id="3-2-3-线程安全"><a href="#3-2-3-线程安全" class="headerlink" title="3.2.3 线程安全"></a>3.2.3 线程安全</h4><ul>
+<li>注意静态数据、多线程读写同步</li>
+<li>使用CRITICAL_SECTION、std::mutex、InterlockedXXX系列函数加速。</li>
+</ul>
+<h4 id="3-2-4-错误处理机制"><a href="#3-2-4-错误处理机制" class="headerlink" title="3.2.4 错误处理机制"></a>3.2.4 错误处理机制</h4><ul>
+<li><p>提供统一的错误码或异常机制（建议导出 C 接口时不抛异常）；</p>
+</li>
+<li><p>提供日志记录机制（内部使用，帮助调试）。</p>
+</li>
+</ul>
+<h3 id="3-3-运行和部署阶段"><a href="#3-3-运行和部署阶段" class="headerlink" title="3.3 运行和部署阶段"></a>3.3 运行和部署阶段</h3><h4 id="3-3-1-避免跨模块内存管理"><a href="#3-3-1-避免跨模块内存管理" class="headerlink" title="3.3.1 避免跨模块内存管理"></a>3.3.1 避免跨模块内存管理</h4><ul>
+<li>DLL中分配的内存应由DLL释放，不要在外部调用释放；</li>
+<li>特别注意：若DLL和外部调用使用不同CRT（运行库），delete会崩溃。</li>
+</ul>
+<h4 id="3-3-2-使用正确的运行库"><a href="#3-3-2-使用正确的运行库" class="headerlink" title="3.3.2 使用正确的运行库"></a>3.3.2 使用正确的运行库</h4><ul>
+<li>尽量统一使用<code>/MD</code>或<code>/MT</code>编译选项；</li>
+<li>使用<code>/MD</code>选项时，DLL不应和外部调用混用new&#x2F;delete。</li>
+</ul>
+<h4 id="3-3-3-避免资源泄漏"><a href="#3-3-3-避免资源泄漏" class="headerlink" title="3.3.3 避免资源泄漏"></a>3.3.3 避免资源泄漏</h4><ul>
+<li>DLL卸载时释放所有句柄、内存、线程、钩子等资源。</li>
+</ul>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%B3%BB%E7%BB%9F%E5%92%8C%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/" class="category-chain-item">系统和网络编程</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E7%B3%BB%E7%BB%9F%E5%92%8C%E7%BD%91%E7%BB%9C%E7%BC%96%E7%A8%8B/DLL/" class="category-chain-item">DLL</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>DLL开发笔记</div>
+      <div>https://kws128.github.io/2025/06/24/DLL开发笔记/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>Kws128</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2025年6月24日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-cc-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2025/06/27/DLL%E8%BD%AC%E5%8F%91/" title="DLL转发">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">DLL转发</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2025/06/20/C++%20%E5%9B%9B%E7%A7%8D%E5%BC%BA%E5%88%B6%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2/" title="C++ 四种强制类型转换">
+                        <span class="hidden-mobile">C++ 四种强制类型转换</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
